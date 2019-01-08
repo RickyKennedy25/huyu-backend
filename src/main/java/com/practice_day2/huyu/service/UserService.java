@@ -11,4 +11,5 @@ public interface UserService {
     public User updateUser(User user);
     public User readUser(String id);
     public ResponseEntity deleteUser(String id);
+    User readUserByUsername(String username);
 }

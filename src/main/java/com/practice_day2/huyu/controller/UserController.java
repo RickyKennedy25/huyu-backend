@@ -1,5 +1,6 @@
 package com.practice_day2.huyu.controller;
 
+import com.practice_day2.huyu.mapper.UserMapper;
 import com.practice_day2.huyu.model.User;
 import com.practice_day2.huyu.model.UserResponse;
 import com.practice_day2.huyu.service.UserService;
@@ -10,10 +11,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api")
 public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    UserMapper userMapper;
 
     @GetMapping("/hello-mahasiswa")
     public String helloMahasiswa() {
@@ -29,36 +34,28 @@ public class UserController {
     @Cacheable(key = "#id", value="user")
     public UserResponse findUser(@PathVariable("id") String id) {
         User _user = userService.readUser(id);
-        return userToUserRespone(_user);
+
+        return userMapper.userToUserRespone(_user);
     }
 
     @PostMapping("/user")
     @CacheEvict(value="user", key="#user.id")
     public UserResponse saveUser(@RequestBody User user) {
         User _user = userService.createUser(user);
-        return userToUserRespone(_user);
+        return userMapper.userToUserRespone(_user);
     }
 
     @PutMapping("/user")
     @CacheEvict(value="user", key="#user.id")
     public UserResponse updateUser(@RequestBody User user) {
         User _user = userService.updateUser(user);
-        return userToUserRespone(_user);
+        return userMapper.userToUserRespone(_user);
     }
 
     @DeleteMapping("/user/{id}")
+    @CacheEvict(key = "#id", value="user")
     public ResponseEntity deleteUser(@PathVariable("id") String id) {
-        return deleteUser(id);
+        return userService.deleteUser(id);
     }
 
-    public UserResponse userToUserRespone(User user) {
-        UserResponse response = new UserResponse();
-
-        response.setId(user.getId());
-        response.setName(user.getName());
-        response.setUsername(user.getUsername());
-        response.setRole(user.getRole());
-
-        return response;
-    }
 }

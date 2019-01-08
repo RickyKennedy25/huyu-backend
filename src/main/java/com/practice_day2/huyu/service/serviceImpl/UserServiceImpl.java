@@ -6,10 +6,18 @@ import com.practice_day2.huyu.repository.UserRepository;
 import com.practice_day2.huyu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
     UserRepository userRepository;
@@ -43,8 +51,36 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new NotFoundException("the user you wants to delete is not found");
         }
+        userRepository.delete(user);
         return ResponseEntity.ok().build();
     }
 
+    @Override
+    public User readUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 
+    private List<GrantedAuthority> buildAuthority(User user) {
+        List<GrantedAuthority> grantedAuthoritys = new ArrayList<>();
+        grantedAuthoritys.add(new SimpleGrantedAuthority(user.getRole()));
+
+        return grantedAuthoritys;
+    }
+
+    /**
+     *
+     * Method standar untuk login
+     *
+     * @param username
+     * @return
+     * @throws UsernameNotFoundException
+     */
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user= readUserByUsername(username);
+        List<GrantedAuthority> authorities = buildAuthority(user);
+
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+                true, true, true, true, authorities);
+    }
 }
