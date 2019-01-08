@@ -14,9 +14,14 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/")
-    public String helloWorld() {
-        return "Hello World";
+    @GetMapping("/hello-mahasiswa")
+    public String helloMahasiswa() {
+        return "Hello Mahasiswa";
+    }
+
+    @GetMapping("/hello-Dosen")
+    public String helloDosen() {
+        return "Hello Dosen";
     }
 
     @GetMapping("/user/{id}")
