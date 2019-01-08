@@ -15,14 +15,13 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Override
-
     public User createUser(User user) {
         return userRepository.save(user);
     }
 
     @Override
     public User updateUser(User user) {
-        if (userRepository.findOne(user.getId()).equals(null)) {
+        if (userRepository.findOne(user.getId()) == null) {
             throw new NotFoundException("user doesn't exists");
         }
         return userRepository.save(user);
@@ -31,7 +30,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User readUser(String id) {
         User user = userRepository.findOne(id);
-        if (user.equals(null)) {
+        if (user == null) {
             throw new NotFoundException("user not found");
         }
         return user;
@@ -41,7 +40,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity deleteUser(String id) {
         User user = userRepository.findOne(id);
 
-        if (user.equals(null)) {
+        if (user == null) {
             throw new NotFoundException("the user you wants to delete is not found");
         }
         return ResponseEntity.ok().build();

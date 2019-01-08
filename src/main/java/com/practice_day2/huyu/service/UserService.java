@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public interface UserService {
 
     public User createUser(User user);
-    public User updateUser(User user) throws Exception;
+    public User updateUser(User user);
     public User readUser(String id);
     public ResponseEntity deleteUser(String id);
 }

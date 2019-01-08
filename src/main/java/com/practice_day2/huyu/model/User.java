@@ -3,6 +3,7 @@ package com.practice_day2.huyu.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
@@ -11,7 +12,7 @@ import java.io.Serializable;
 @Document(collection = "user")
 public class User implements Serializable {
 
-    private String id;
+    private String id = new ObjectId().toString();
 
     private String name;
 
