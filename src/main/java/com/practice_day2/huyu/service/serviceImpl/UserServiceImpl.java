@@ -5,7 +5,9 @@ import com.practice_day2.huyu.repository.UserRepository;
 import com.practice_day2.huyu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired

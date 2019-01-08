@@ -1,0 +1,7 @@
+/home/rickykennedy/Documents/repo/FUTURE/training_day2/huyu-backend/src/main/java/com/practice_day2/huyu/model/User.java
+/home/rickykennedy/Documents/repo/FUTURE/training_day2/huyu-backend/src/main/java/com/practice_day2/huyu/HuyuApplication.java
+/home/rickykennedy/Documents/repo/FUTURE/training_day2/huyu-backend/src/main/java/com/practice_day2/huyu/service/UserService.java
+/home/rickykennedy/Documents/repo/FUTURE/training_day2/huyu-backend/src/main/java/com/practice_day2/huyu/configuration/SwaggerConfig.java
+/home/rickykennedy/Documents/repo/FUTURE/training_day2/huyu-backend/src/main/java/com/practice_day2/huyu/service/serviceImpl/UserServiceImpl.java
+/home/rickykennedy/Documents/repo/FUTURE/training_day2/huyu-backend/src/main/java/com/practice_day2/huyu/controller/UserController.java
+/home/rickykennedy/Documents/repo/FUTURE/training_day2/huyu-backend/src/main/java/com/practice_day2/huyu/repository/UserRepository.java

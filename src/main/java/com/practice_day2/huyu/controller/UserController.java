@@ -12,6 +12,10 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @GetMapping("/")
+    public String helloWorld() {
+        return "Hello World";
+    }
     @GetMapping("/user/{id}")
     public User findUser(@PathVariable("id") String id) {
         return userService.readUser(id);
