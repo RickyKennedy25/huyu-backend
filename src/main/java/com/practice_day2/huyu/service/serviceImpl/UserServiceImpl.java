@@ -1,5 +1,6 @@
 package com.practice_day2.huyu.service.serviceImpl;
 
+import com.practice_day2.huyu.model.InvalidValueException;
 import com.practice_day2.huyu.model.NotFoundException;
 import com.practice_day2.huyu.model.User;
 import com.practice_day2.huyu.repository.UserRepository;
@@ -28,6 +29,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User createUser(User user) {
+        if(userRepository.findByUsername(user.getUsername()) == null) {
+            throw new InvalidValueException("username has registered!");
+        }
         user.setPassword(encoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
@@ -63,7 +67,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User readUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new NotFoundException("user not found");
+        }
+        return user;
     }
 
     private List<GrantedAuthority> buildAuthority(User user) {
