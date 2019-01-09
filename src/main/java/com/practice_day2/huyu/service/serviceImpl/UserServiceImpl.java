@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User createUser(User user) {
-        if(userRepository.findByUsername(user.getUsername()) == null) {
+        if(userRepository.findByUsername(user.getUsername()) != null) {
             throw new InvalidValueException("username has registered!");
         }
         user.setPassword(encoder.encode(user.getPassword()));
@@ -44,11 +44,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (userRepository.findOne(user.getId()) == null) {
             throw new NotFoundException("user doesn't exists");
         } else {
-            if (SecurityContextHolder.getContext().getAuthentication().getName() != user.getUsername()) {
+            User find = userRepository.findByUsername(user.getUsername());
+            if (SecurityContextHolder.getContext().getAuthentication().getName() != find.getUsername()) {
                 throw new InvalidValueException("username invalid");
             }
-            user.setPassword(encoder.encode(user.getPassword()));
-            return userRepository.save(user);
+            user.setPassword(encoder.encode(find.getPassword()));
+            return userRepository.save(find);
         }
 
 
@@ -69,6 +70,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         if (user == null) {
             throw new NotFoundException("the user you wants to delete is not found");
+        }
+        if (SecurityContextHolder.getContext().getAuthentication().getName() != user.getUsername()) {
+            throw new InvalidValueException("username invalid ");
         }
         userRepository.delete(user);
         return ResponseEntity.ok().build();
