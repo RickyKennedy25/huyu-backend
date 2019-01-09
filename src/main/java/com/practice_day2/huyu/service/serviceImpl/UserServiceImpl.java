@@ -45,11 +45,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new NotFoundException("user doesn't exists");
         } else {
             User find = userRepository.findByUsername(user.getUsername());
-            if (SecurityContextHolder.getContext().getAuthentication().getName() != find.getUsername()) {
+            if (!SecurityContextHolder.getContext().getAuthentication().getName().equals(find.getUsername())) {
                 throw new InvalidValueException("username invalid");
             }
-            user.setPassword(encoder.encode(find.getPassword()));
-            return userRepository.save(find);
+            user.setPassword(encoder.encode(user.getPassword()));
+            return userRepository.save(user);
         }
 
 
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (user == null) {
             throw new NotFoundException("the user you wants to delete is not found");
         }
-        if (SecurityContextHolder.getContext().getAuthentication().getName() != user.getUsername()) {
+        if (!SecurityContextHolder.getContext().getAuthentication().getName().equals(user.getUsername())) {
             throw new InvalidValueException("username invalid ");
         }
         userRepository.delete(user);
@@ -105,6 +105,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user= readUserByUsername(username);
+        if (user == null) {
+            throw new NotFoundException("user not found");
+        }
         List<GrantedAuthority> authorities = buildAuthority(user);
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
