@@ -1,6 +1,7 @@
 package com.practice_day2.huyu.controller;
 
 import com.practice_day2.huyu.mapper.UserMapper;
+import com.practice_day2.huyu.model.NotFoundException;
 import com.practice_day2.huyu.model.User;
 import com.practice_day2.huyu.model.UserResponse;
 import com.practice_day2.huyu.service.UserService;
@@ -41,6 +42,9 @@ public class UserController {
 
     @GetMapping("/user/loggedin")
     public UserResponse loggedinUser() {
+        if (SecurityContextHolder.getContext().getAuthentication().getName() == null) {
+            throw new NotFoundException("no logged in user has found");
+        }
         return userMapper.userToUserRespone(userService.readUserByUsername(SecurityContextHolder
                 .getContext().getAuthentication().getName()));
     }

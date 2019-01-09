@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User createUser(User user) {
-        if(userRepository.findByUsername(user.getUsername()) == null) {
+        if(userRepository.findByUsername(user.getUsername()) != null) {
             throw new InvalidValueException("username has registered!");
         }
         user.setPassword(encoder.encode(user.getPassword()));
