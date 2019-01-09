@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,6 +37,12 @@ public class UserController {
         User _user = userService.readUser(id);
 
         return userMapper.userToUserRespone(_user);
+    }
+
+    @GetMapping("/user/loggedin")
+    public UserResponse loggedinUser() {
+        return userMapper.userToUserRespone(userService.readUserByUsername(SecurityContextHolder
+                .getContext().getAuthentication().getName()));
     }
 
     @PostMapping("/user")
